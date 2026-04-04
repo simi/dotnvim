@@ -71,7 +71,14 @@ vim.api.nvim_set_keymap("n", "<C-P>", ":Telescope<CR>", { noremap = true, silent
 vim.api.nvim_set_keymap("n", "<F9>", ":NERDTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>d", ":NERDTreeFind<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F8>', ':TagbarToggle<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('n', '<Leader>rt', ':!ctags --exclude=node_modules --extra=+f -R *<CR><CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>rt', function()
+ vim.fn.system('git rev-parse --is-inside-work-tree')
+ if vim.v.shell_error == 0 then
+   vim.cmd('!git ls-files | ctags --extras=+f -L -')
+ else
+   vim.cmd('!ctags --exclude=node_modules --extras=+f -R *')
+ end
+end, { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Leader>re', ':!ctags -f gems.tags -R --languages=ruby --exclude=node_modules --exclude=.git --exclude=log . $(rb x bundle list --paths)<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<CR>", "coc#pum#visible() ? coc#pum#confirm() : \"\\<CR>\"", { expr = true, silent = true })
 

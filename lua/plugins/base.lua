@@ -21,6 +21,7 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "master",
     build = function()
       require("nvim-treesitter.install").update({ with_sync = true })()
     end,
