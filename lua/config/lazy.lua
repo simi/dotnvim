@@ -57,6 +57,7 @@ vim.opt.backupdir = "/tmp"
 vim.opt.directory = "/tmp"
 
 -- UI settings
+vim.opt.termguicolors = true
 vim.opt.scrolloff = 2
 vim.opt.laststatus = 1
 

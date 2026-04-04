@@ -71,6 +71,18 @@ return {
     priority = 1000,
     config = function()
       vim.cmd.colorscheme("jellybeans")
+      -- Workaround for neovim#9800: CursorLine gets unwanted underline in diff
+      -- regions when guifg is unset. Setting fg to Normal's fg color prevents it.
+      local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).fg
+      vim.api.nvim_set_hl(0, "CursorLine", {
+        bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg,
+        fg = normal_fg,
+      })
+      -- Override diff highlights to bg-only so syntax colours show through
+      vim.api.nvim_set_hl(0, "DiffAdd",    { bg = "#1e3a1e" })
+      vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#3a1e1e" })
+      vim.api.nvim_set_hl(0, "DiffChange", { bg = "#1e1e3a" })
+      vim.api.nvim_set_hl(0, "DiffText",   { bg = "#2e2e1e", bold = true })
     end,
   },
   { "preservim/nerdtree", },
@@ -118,6 +130,23 @@ return {
   {
     "mason-org/mason.nvim",
     opts = {}
+  },
+  {
+    "sindrets/diffview.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory" },
+    keys = {
+      { "<leader>gd", "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", desc = "Diff vs default branch" },
+      { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>",                         desc = "File history" },
+      { "<leader>gq", "<cmd>DiffviewClose<cr>",                                 desc = "Close diffview" },
+    },
+    opts = {
+      use_icons = false,
+      enhanced_diff_hl = true,
+      default_args = {
+        DiffviewOpen = { "--imply-local" },
+      },
+    },
   },
   {
     "folke/trouble.nvim",

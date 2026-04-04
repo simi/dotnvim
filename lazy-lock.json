@@ -1,5 +1,6 @@
 {
   "coc.nvim": { "branch": "release", "commit": "23780f32f5d5be3332c848927dc10a72f6485bd9" },
+  "diffview.nvim": { "branch": "main", "commit": "4516612fe98ff56ae0415a259ff6361a89419b0a" },
   "gitsigns.nvim": { "branch": "main", "commit": "e1fb5425c8812214209b3f24eaa582c6c552cf98" },
   "jellybeans.vim": { "branch": "master", "commit": "ef83bf4dc8b3eacffc97bf5c96ab2581b415c9fa" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
