@@ -25,9 +25,6 @@ vim.opt.mouse = "a"
 vim.opt.cursorline = true
 vim.opt.cursorcolumn = true
 
--- Regex performance improvement
-vim.opt.re = 1
-
 -- disable animations
 vim.g.neovide_position_animation_length = 0
 vim.g.neovide_cursor_animation_length = 0.00
@@ -101,7 +98,7 @@ require("lazy").setup({
   -- colorscheme that will be used when installing plugins.
   -- install = { colorscheme = { "habamax" } },
   -- automatically check for plugin updates
-  checker = { enabled = true },
+  checker = { enabled = true, notify = false },
 })
 
 vim.g.NERDTreeIgnore = { '__pycache__' }
