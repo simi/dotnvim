@@ -72,18 +72,17 @@ return {
     priority = 1000,
     config = function()
       vim.cmd.colorscheme("jellybeans")
-      -- Workaround for neovim#9800: CursorLine gets unwanted underline in diff
-      -- regions when guifg is unset. Setting fg to Normal's fg color prevents it.
-      local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).fg
-      vim.api.nvim_set_hl(0, "CursorLine", {
-        bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg,
-        fg = normal_fg,
-      })
       -- Override diff highlights to bg-only so syntax colours show through
       vim.api.nvim_set_hl(0, "DiffAdd",    { bg = "#1e3a1e" })
       vim.api.nvim_set_hl(0, "DiffDelete", { bg = "#3a1e1e" })
       vim.api.nvim_set_hl(0, "DiffChange", { bg = "#1e1e3a" })
       vim.api.nvim_set_hl(0, "DiffText",   { bg = "#2e2e1e", bold = true })
+      -- Workaround for neovim#9800: CursorLine in diff regions gets an unwanted
+      -- underline when guifg is unset. Scoped to diff windows via winhighlight
+      -- so normal editing CursorLine (bg-only) is unchanged.
+      local normal_fg = vim.api.nvim_get_hl(0, { name = "Normal",     link = false }).fg
+      local cursor_bg = vim.api.nvim_get_hl(0, { name = "CursorLine", link = false }).bg
+      vim.api.nvim_set_hl(0, "DiffCursorLine", { fg = normal_fg, bg = cursor_bg })
     end,
   },
   { "preservim/nerdtree", },
@@ -146,6 +145,11 @@ return {
       enhanced_diff_hl = true,
       default_args = {
         DiffviewOpen = { "--imply-local" },
+      },
+      hooks = {
+        diff_buf_win_enter = function(_, winid, _ctx)
+          vim.wo[winid].winhighlight = "CursorLine:DiffCursorLine"
+        end,
       },
     },
   },
