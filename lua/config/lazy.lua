@@ -60,6 +60,8 @@ vim.opt.directory = "/tmp"
 vim.opt.termguicolors = true
 vim.opt.scrolloff = 2
 vim.opt.laststatus = 1
+vim.opt.title = true
+vim.opt.titlestring = "%{expand('%:~:.')} — nvim"
 
 -- Tags
 vim.opt.tags:append({".git/tags", "gems.tags"})
