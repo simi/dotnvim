@@ -73,6 +73,7 @@ vim.api.nvim_set_keymap("n", "<C-P>", ":Telescope<CR>", { noremap = true, silent
 vim.api.nvim_set_keymap("n", "<F9>", ":NERDTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>d", ":NERDTreeFind<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F8>', ':TagbarToggle<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float, { noremap = true, silent = true, desc = "Show diagnostic" })
 vim.keymap.set('n', '<Leader>rt', function()
  vim.fn.system('git rev-parse --is-inside-work-tree')
  if vim.v.shell_error == 0 then

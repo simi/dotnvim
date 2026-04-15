@@ -53,7 +53,26 @@ return {
   },
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
-    dependencies = { 'nvim-lua/plenary.nvim' }
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local actions = require('telescope.actions')
+      local action_layout = require('telescope.actions.layout')
+      require('telescope').setup({
+        defaults = {
+          mappings = {
+            i = {
+              ["<C-h>"] = action_layout.toggle_preview,
+              ["<C-l>"] = action_layout.cycle_layout_next,
+            },
+            n = {
+              ["<C-h>"] = action_layout.toggle_preview,
+              ["<C-l>"] = action_layout.cycle_layout_next,
+            },
+          },
+          cycle_layout_list = { "horizontal", "vertical", "center" },
+        },
+      })
+    end,
   },
   {
     'neovim/nvim-lspconfig',
