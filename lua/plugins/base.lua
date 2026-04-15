@@ -86,6 +86,7 @@ return {
     'lewis6991/gitsigns.nvim',
   },
   { "neoclide/coc.nvim", branch='release', },
+  { "beyondmarc/hlsl.vim" },
   {
     'mrcjkb/rustaceanvim',
     lazy = false, -- This plugin is already lazy
