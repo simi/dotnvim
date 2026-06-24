@@ -54,7 +54,9 @@ end
 -- Security and backup
 vim.opt.secure = true
 vim.opt.backupdir = "/tmp"
-vim.opt.directory = "/tmp"
+local swapdir = vim.fn.stdpath("state") .. "/swap"
+vim.fn.mkdir(swapdir, "p")
+vim.opt.directory = swapdir .. "//"
 
 -- UI settings
 vim.opt.termguicolors = true
