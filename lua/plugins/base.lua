@@ -77,9 +77,10 @@ return {
   {
     'neovim/nvim-lspconfig',
     config = function()
-      require('lspconfig').clangd.setup({
+      vim.lsp.config('clangd', {
         cmd = { "clangd", "--background-index" },
       })
+      vim.lsp.enable('clangd')
     end,
   },
   {
