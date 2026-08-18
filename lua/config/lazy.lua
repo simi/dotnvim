@@ -18,6 +18,10 @@ vim.opt.rtp:prepend(lazypath)
 
 -- vim
 vim.g.mapleader = ","
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
 vim.opt.compatible = false
 vim.opt.relativenumber = true
 vim.opt.ruler = true
@@ -63,7 +67,7 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 2
 vim.opt.laststatus = 1
 vim.opt.title = true
-vim.opt.titlestring = "%{expand('%:~:.')} — nvim"
+vim.opt.titlestring = "%{expand('%:~:.')} - nvim"
 
 -- Tags
 vim.opt.tags:append({".git/tags", "gems.tags"})

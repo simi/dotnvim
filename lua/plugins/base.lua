@@ -21,29 +21,30 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter",
-    branch = "master",
-    build = function()
-      require("nvim-treesitter.install").update({ with_sync = true })()
-    end,
+    branch = "main",
+    lazy = false,
+    build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup {
-        ensure_installed = {
-          "bash",
-          "typescript",
-          "tsx",
-          "javascript",
-          "lua",
-          "markdown",
-          "markdown_inline",
-          "sql",
-          "python",
-          "ruby"
-        },
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = false, -- disables slow legacy syntax
-        },
-      }
+      require("nvim-treesitter").install({
+        "bash",
+        "typescript",
+        "tsx",
+        "javascript",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "sql",
+        "python",
+        "ruby",
+        "rust",
+      })
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "*",
+        callback = function(args)
+          pcall(vim.treesitter.start, args.buf)
+        end,
+      })
     end,
   },
   {
@@ -52,7 +53,7 @@ return {
     opts = {},
   },
   {
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
+    'nvim-telescope/telescope.nvim', version = '*',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function()
       local actions = require('telescope.actions')
@@ -90,8 +91,8 @@ return {
   { "beyondmarc/hlsl.vim" },
   {
     'mrcjkb/rustaceanvim',
-    lazy = false, -- This plugin is already lazy
-    tag = 'v5.26.0'
+    lazy = false,
+    version = '^9',
   },
   {
     'nanotech/jellybeans.vim',
