@@ -70,23 +70,35 @@ vim.opt.title = true
 vim.opt.titlestring = "%{expand('%:~:.')} - nvim"
 
 -- Tags
-vim.opt.tags:append({".git/tags", "gems.tags"})
+vim.opt.tags:append({".git/tags", "gems.tags", "tags"})
+
+-- Git for Windows ships cat and friends that plugins shell out to
+local git_usr_bin = "C:\\Program Files\\Git\\usr\\bin"
+if vim.fn.isdirectory(git_usr_bin) == 1 then
+  vim.env.PATH = vim.env.PATH .. ";" .. git_usr_bin
+end
 
 -- Shortcuts
 -- vim.api.nvim_set_keymap('n', '<Leader>d', ':NvimTreeFindFile<CR>', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('n', '<F9>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-P>", ":Telescope<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-P>", ":Telescope builtin<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<F9>", ":NERDTreeToggle<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<Leader>d", ":NERDTreeFind<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F8>', ':TagbarToggle<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<Leader>tb', ':TagbarToggle<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float, { noremap = true, silent = true, desc = "Show diagnostic" })
 vim.keymap.set('n', '<Leader>rt', function()
- vim.fn.system('git rev-parse --is-inside-work-tree')
- if vim.v.shell_error == 0 then
-   vim.cmd('!git ls-files | ctags --extras=+f -L -')
- else
-   vim.cmd('!ctags --exclude=node_modules --extras=+f -R *')
- end
+  local opts = ''
+  local ctags_config = vim.fn.expand('~/.ctags')
+  if vim.fn.filereadable(ctags_config) == 1 then
+    opts = '--options=' .. vim.fn.shellescape(ctags_config) .. ' '
+  end
+  vim.fn.system('git rev-parse --is-inside-work-tree')
+  if vim.v.shell_error == 0 then
+    vim.cmd('!git ls-files | ctags ' .. opts .. '--extras=+f -L -')
+  else
+    vim.cmd('!ctags ' .. opts .. '--exclude=node_modules --exclude=.git --extras=+f -R .')
+  end
 end, { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Leader>re', ':!ctags -f gems.tags -R --languages=ruby --exclude=node_modules --exclude=.git --exclude=log . $(rb x bundle list --paths)<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap("i", "<CR>", "coc#pum#visible() ? coc#pum#confirm() : \"\\<CR>\"", { expr = true, silent = true })
